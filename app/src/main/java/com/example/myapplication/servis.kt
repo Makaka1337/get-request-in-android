@@ -4,7 +4,7 @@ import retrofit2.http.GET
 
 interface servis {
     @GET("/random")
-    fun get_data():
+    suspend fun get_data():
         dataM
 
 

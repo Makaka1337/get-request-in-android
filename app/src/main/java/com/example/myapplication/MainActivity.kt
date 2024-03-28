@@ -19,13 +19,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-        val retrofit = Retrofit.Builder().baseUrl("https://api.quotable.io/random").addConverterFactory(GsonConverterFactory.create()).build()
+        val retrofit = Retrofit.Builder().baseUrl("https://api.quotable.io/").addConverterFactory(GsonConverterFactory.create()).build()
         val servis = retrofit.create(servis::class.java)
 
         binding.button.setOnClickListener{
-            GlobalScope.launch(Dispatchers.Main) {val data= withContext(Dispatchers.IO) {return@withContext servis.get_data()} }
+            GlobalScope.launch(Dispatchers.Main)
+            {
+                val data= withContext(Dispatchers.IO) {
+                    return@withContext servis.get_data()
+                }
+                binding.textView.text = data.content
+            }
         }
 
     }
